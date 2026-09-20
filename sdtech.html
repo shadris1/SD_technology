@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SD Technology — Electronics, Repair &amp; Interior Design</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1b1810;
+    --cream:#f3ecdd;
+    --ochre:#a3402c;
+    --clay:#8a5a3a;
+    --gold:#c99a3d;
+    --panel:#241f16;
+    --panel-2:#2c2519;
+    --line: rgba(243,236,221,0.14);
+    --electro:#3f7ce0;
+    --repair:#d97a2e;
+    --interior:#b6683f;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--ink);
+    color:var(--cream);
+    font-family:'Inter',sans-serif;
+    line-height:1.5;
+  }
+  h1,h2,h3,.display{
+    font-family:'Space Grotesk',sans-serif;
+    letter-spacing:-0.01em;
+  }
+  .serif{ font-family:'Fraunces',serif; }
+  a{color:inherit;}
+  img{max-width:100%;display:block;}
+
+  /* --- background texture: faint geometric weave, nod to imigongo pattern --- */
+  .texture{
+    position:fixed; inset:0; pointer-events:none; z-index:0; opacity:0.05;
+    background-image:
+      repeating-linear-gradient(45deg, var(--cream) 0 2px, transparent 2px 22px),
+      repeating-linear-gradient(-45deg, var(--cream) 0 2px, transparent 2px 22px);
+  }
+
+  header{
+    position:sticky; top:0; z-index:50;
+    background:rgba(27,24,16,0.92);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-wrap{
+    max-width:1180px; margin:0 auto; padding:16px 24px;
+    display:flex; align-items:center; justify-content:space-between; gap:20px;
+  }
+  .brand{ display:flex; align-items:center; gap:10px; font-weight:700; font-size:1.15rem; }
+  .brand .mark{
+    width:34px; height:34px; border-radius:8px;
+    background:linear-gradient(135deg,var(--ochre),var(--gold));
+    display:flex; align-items:center; justify-content:center; font-size:1rem; color:var(--ink); font-weight:700;
+  }
+
+  /* Switcher — styled like a breaker/toggle panel, the site's signature element */
+  .switcher{
+    display:flex; gap:2px; background:var(--panel-2); border:1px solid var(--line);
+    border-radius:12px; padding:4px;
+  }
+  .switcher button{
+    all:unset; cursor:pointer; padding:9px 16px; border-radius:9px; font-size:0.85rem;
+    font-weight:600; color:rgba(243,236,221,0.65); transition:all .25s ease; white-space:nowrap;
+  }
+  .switcher button:hover{ color:var(--cream); }
+  .switcher button.active{ background:var(--ink); color:var(--cream); box-shadow: inset 0 0 0 1px var(--line); }
+  .switcher button.active[data-sec="electro"]{ box-shadow: inset 0 0 0 1px var(--electro); }
+  .switcher button.active[data-sec="repair"]{ box-shadow: inset 0 0 0 1px var(--repair); }
+  .switcher button.active[data-sec="interior"]{ box-shadow: inset 0 0 0 1px var(--interior); }
+
+  .contact-link{ font-size:0.85rem; font-weight:600; padding:9px 14px; border:1px solid var(--line); border-radius:9px; }
+  .contact-link:hover{ border-color:var(--gold); }
+
+  /* HERO */
+  .hero{ max-width:1180px; margin:0 auto; padding:88px 24px 60px; position:relative; z-index:1; }
+  .eyebrow{ font-size:0.78rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--gold); font-weight:600; margin-bottom:18px; }
+  .hero h1{ font-size:clamp(2.3rem,5vw,3.9rem); font-weight:700; max-width:820px; margin:0 0 20px; line-height:1.05; }
+  .hero p{ max-width:560px; color:rgba(243,236,221,0.7); font-size:1.05rem; margin-bottom:32px; }
+  .hero-stats{ display:flex; gap:36px; flex-wrap:wrap; margin-top:44px; border-top:1px solid var(--line); padding-top:24px; }
+  .hero-stats div span{ display:block; }
+  .hero-stats .num{ font-family:'Space Grotesk',sans-serif; font-size:1.6rem; font-weight:700; color:var(--gold); }
+  .hero-stats .lab{ font-size:0.78rem; color:rgba(243,236,221,0.55); }
+
+  /* SECTIONS */
+  main{ position:relative; z-index:1; }
+  .section{ max-width:1180px; margin:0 auto; padding:70px 24px; border-top:1px solid var(--line); scroll-margin-top:90px; }
+  .section-head{ display:flex; align-items:flex-end; justify-content:space-between; gap:20px; flex-wrap:wrap; margin-bottom:36px; }
+  .section-head .tag{ font-size:0.78rem; text-transform:uppercase; letter-spacing:0.12em; font-weight:600; margin-bottom:10px; display:flex; align-items:center; gap:8px;}
+  .section-head h2{ font-size:clamp(1.7rem,3vw,2.4rem); margin:0; }
+  .section-head p.desc{ max-width:420px; color:rgba(243,236,221,0.6); font-size:0.95rem; }
+
+  #electro .tag{ color:var(--electro); }
+  #repair .tag{ color:var(--repair); }
+  #interior .tag{ color:var(--interior); }
+  .dot{ width:7px; height:7px; border-radius:50%; background:currentColor; display:inline-block; }
+
+  .grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:22px; }
+
+  .card{
+    background:var(--panel); border:1px solid var(--line); border-radius:14px; overflow:hidden;
+    display:flex; flex-direction:column; transition:transform .2s ease, border-color .2s ease;
+  }
+  .card:hover{ transform:translateY(-3px); border-color:rgba(243,236,221,0.3); }
+  .card .imgwrap{ aspect-ratio:4/3; overflow:hidden; background:#000; }
+  .card .imgwrap img{ width:100%; height:100%; object-fit:cover; transition:transform .4s ease; }
+  .card:hover .imgwrap img{ transform:scale(1.06); }
+  .card-body{ padding:18px 18px 20px; display:flex; flex-direction:column; gap:10px; flex:1; }
+  .card-body h3{ font-size:1.02rem; margin:0; font-weight:600; }
+  .card-body .note{ font-size:0.83rem; color:rgba(243,236,221,0.55); margin:0; flex:1; }
+  .price-row{ display:flex; align-items:center; justify-content:space-between; margin-top:auto; padding-top:6px; }
+  .price{ font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1.08rem; }
+  .price small{ font-size:0.7rem; font-weight:500; color:rgba(243,236,221,0.5); margin-left:3px;}
+
+  .buy-btn{
+    all:unset; cursor:pointer; padding:9px 16px; border-radius:9px; font-size:0.82rem; font-weight:700;
+    background:var(--gold); color:var(--ink); transition:filter .2s ease;
+  }
+  .buy-btn:hover{ filter:brightness(1.12); }
+
+  #interior .card-body h3{ font-family:'Fraunces',serif; font-weight:500; font-size:1.15rem; }
+
+  .video-head{ margin:56px 0 20px; border-top:1px solid var(--line); padding-top:36px; }
+  .video-head h3{ margin:0 0 6px; font-size:1.25rem; }
+  .video-head .desc{ margin:0; }
+  .video-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:20px; }
+  .video-card{ background:var(--panel); border:1px solid var(--line); border-radius:14px; overflow:hidden; }
+  .video-embed{ aspect-ratio:16/9; }
+  .video-embed iframe{ width:100%; height:100%; border:0; }
+  .video-card p{ margin:0; padding:12px 16px; font-size:0.88rem; font-weight:600; color:rgba(243,236,221,0.8); }
+
+  /* FOOTER */
+  footer{ border-top:1px solid var(--line); padding:50px 24px 34px; position:relative; z-index:1; }
+  .footer-wrap{ max-width:1180px; margin:0 auto; display:flex; justify-content:space-between; gap:30px; flex-wrap:wrap; }
+  footer .col h4{ font-size:0.8rem; text-transform:uppercase; letter-spacing:0.1em; color:var(--gold); margin:0 0 12px; }
+  footer .col p, footer .col a{ font-size:0.88rem; color:rgba(243,236,221,0.65); display:block; margin-bottom:6px; text-decoration:none; }
+  footer .col a:hover{ color:var(--cream); }
+  .copyline{ text-align:center; margin-top:40px; font-size:0.78rem; color:rgba(243,236,221,0.4); }
+
+  /* MODAL */
+  .overlay{
+    position:fixed; inset:0; background:rgba(0,0,0,0.6); backdrop-filter:blur(3px);
+    display:none; align-items:center; justify-content:center; z-index:100; padding:20px;
+  }
+  .overlay.open{ display:flex; }
+  .modal{
+    background:var(--panel); border:1px solid var(--line); border-radius:16px; max-width:420px; width:100%;
+    padding:26px; position:relative;
+  }
+  .modal-close{ all:unset; cursor:pointer; position:absolute; top:16px; right:16px; color:rgba(243,236,221,0.5); font-size:1.2rem; }
+  .modal-close:hover{ color:var(--cream); }
+  .modal h3{ margin:0 0 4px; font-size:1.2rem; }
+  .modal .item-price{ color:var(--gold); font-weight:700; font-family:'Space Grotesk',sans-serif; margin-bottom:20px; }
+  .pay-options{ display:flex; gap:10px; margin-bottom:18px; }
+  .pay-opt{
+    all:unset; cursor:pointer; flex:1; text-align:center; padding:14px 8px; border-radius:10px;
+    border:1px solid var(--line); font-weight:700; font-size:0.85rem; transition:all .2s ease;
+  }
+  .pay-opt.active{ border-color:var(--gold); background:rgba(201,154,61,0.1); }
+  .pay-opt.mtn.active{ border-color:#ffcc08; background:rgba(255,204,8,0.1); }
+  .pay-opt.airtel.active{ border-color:#e30613; background:rgba(227,6,19,0.1); }
+  .steps{ font-size:0.85rem; color:rgba(243,236,221,0.75); background:var(--panel-2); border-radius:10px; padding:14px 16px; margin-bottom:18px; }
+  .steps ol{ margin:8px 0 0; padding-left:18px; }
+  .steps li{ margin-bottom:6px; }
+  .steps code{ background:rgba(243,236,221,0.1); padding:1px 6px; border-radius:4px; }
+  .whatsapp-btn{
+    all:unset; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px;
+    width:100%; padding:13px; border-radius:10px; background:#25D366; color:#0b1a0f; font-weight:700; font-size:0.92rem;
+  }
+  .whatsapp-btn:hover{ filter:brightness(1.06); }
+  .modal .fineprint{ font-size:0.72rem; color:rgba(243,236,221,0.45); margin-top:14px; text-align:center; }
+
+  @media (max-width:640px){
+    .nav-wrap{ flex-wrap:wrap; }
+    .switcher{ order:3; width:100%; overflow-x:auto; }
+    .hero{ padding-top:60px; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+    .card, .card .imgwrap img{ transition:none; }
+  }
+</style>
+</head>
+<body>
+<div class="texture"></div>
+
+<header>
+  <div class="nav-wrap">
+    <div class="brand"><span class="mark">SD</span> SD Technology</div>
+    <nav class="switcher" id="switcher">
+      <button data-sec="electro" class="active">Electro Store</button>
+      <button data-sec="repair">Repair</button>
+      <button data-sec="interior">Interior Design</button>
+    </nav>
+    <a class="contact-link" href="#footer">Contact</a>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="eyebrow">Kigali, Rwanda</div>
+    <h1>Electronics, repairs, and handmade interiors — one workshop, three trades.</h1>
+    <p>SD Technology sells phones and electronics, fixes what's broken, and builds one-of-a-kind interior pieces by hand. Browse a section below and pay instantly with MTN Mobile Money or Airtel Money.</p>
+    <div class="hero-stats">
+      <div><span class="num">01</span><span class="lab">Electro Store</span></div>
+      <div><span class="num">02</span><span class="lab">Repair</span></div>
+      <div><span class="num">03</span><span class="lab">Interior Design</span></div>
+    </div>
+  </section>
+
+  <!-- ELECTRO STORE -->
+  <section class="section" id="electro">
+    <div class="section-head">
+      <div>
+        <div class="tag"><span class="dot"></span>01 · Electro Store</div>
+        <h2>Phones &amp; electronics</h2>
+      </div>
+      <p class="desc">New and reconditioned devices, checked and ready to use.</p>
+    </div>
+    <div class="grid" id="grid-electro"></div>
+  </section>
+
+  <!-- REPAIR -->
+  <section class="section" id="repair">
+    <div class="section-head">
+      <div>
+        <div class="tag"><span class="dot"></span>02 · Repair</div>
+        <h2>Device repair services</h2>
+      </div>
+      <p class="desc">Screens, batteries, ports and software — fixed same day in most cases.</p>
+    </div>
+    <div class="grid" id="grid-repair"></div>
+
+    <div class="video-head">
+      <h3>How the repairs are done</h3>
+      <p class="desc">Reference videos showing each replacement step by step.</p>
+    </div>
+    <div class="video-grid">
+      <div class="video-card">
+        <div class="video-embed"><iframe src="https://www.youtube.com/embed/kE3s-ahwfSU" title="Screen replacement guide" frameborder="0" allowfullscreen loading="lazy"></iframe></div>
+        <p>Screen replacement</p>
+      </div>
+      <div class="video-card">
+        <div class="video-embed"><iframe src="https://www.youtube.com/embed/ltd2XT1hzBU" title="Back glass replacement guide" frameborder="0" allowfullscreen loading="lazy"></iframe></div>
+        <p>Back glass replacement</p>
+      </div>
+      <div class="video-card">
+        <div class="video-embed"><iframe src="https://www.youtube.com/embed/Vua8XFpg_sc" title="Battery replacement guide" frameborder="0" allowfullscreen loading="lazy"></iframe></div>
+        <p>Battery replacement</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTERIOR DESIGN -->
+  <section class="section" id="interior">
+    <div class="section-head">
+      <div>
+        <div class="tag"><span class="dot"></span>03 · Interior Design</div>
+        <h2 class="serif">Handmade pieces for the home</h2>
+      </div>
+      <p class="desc">Glass bottle lamps and small decorative furniture, made by hand in the workshop.</p>
+    </div>
+    <div class="grid" id="grid-interior"></div>
+  </section>
+</main>
+
+<footer id="footer">
+  <div class="footer-wrap">
+    <div class="col">
+      <h4>SD Technology</h4>
+      <p>Kigali, Rwanda</p>
+      <p>Electronics · Repair · Interior Design</p>
+    </div>
+    <div class="col">
+      <h4>Contact</h4>
+      <a href="tel:+250782249976">+250782249976 (placeholder)</a>
+      <a href="https://wa.me/250788000000" target="_blank" rel="noopener">WhatsApp</a>
+    </div>
+    <div class="col">
+      <h4>Pay by</h4>
+      <p>MTN Mobile Money</p>
+      <p>Airtel Money</p>
+    </div>
+  </div>
+  <div class="copyline">© 2026 SD Technology. All prices in RWF.</div>
+</footer>
+
+<!-- PAYMENT MODAL -->
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <button class="modal-close" id="modalClose">✕</button>
+    <h3 id="modalItem">Product name</h3>
+    <div class="item-price" id="modalPrice">0 RWF</div>
+
+    <div class="pay-options">
+      <button class="pay-opt mtn active" data-net="mtn">MTN MoMo</button>
+      <button class="pay-opt airtel" data-net="airtel">Airtel Money</button>
+    </div>
+
+    <div class="steps" id="steps"></div>
+
+    <button class="whatsapp-btn" id="waBtn">Confirm order on WhatsApp</button>
+    <div class="fineprint">You'll get a payment confirmation from SD Technology before the order ships.</div>
+  </div>
+</div>
+
+<script>
+  // ---- EDIT ME: replace with SD Technology's real numbers before publishing ----
+  const CONTACT_PHONE_INTL = "250782249976";      // WhatsApp number, international format, no + or spaces
+  const MTN_MERCHANT_CODE  = "*182*8*1*163101";               // MTN MoMo merchant/till code (*182*8*1*CODE#)
+  const AIRTEL_MERCHANT_CODE = "250782249976";             // Airtel Money merchant code (*500*CODE#)
+  // -------------------------------------------------------------------------
+
+  const PRODUCTS = {
+    electro: [
+      { name:"Smartphone — mid-range, 128GB", price:185000, img:"https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=600&q=80&auto=format&fit=crop", note:"Dual SIM, 6.5\" display" },
+      { name:"Bluetooth earbuds", price:8000, img:"https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=600&q=80&auto=format&fit=crop", note:"Wireless charging case" },
+      {  name:"charger", price:5000, img:"charger (1).jpg", note:"Fast charge, dual USB" },
+      { name:"Smart TV, 43\"", price:265000, img:"https://images.unsplash.com/photo-1593305841991-05c297ba4575?w=600&q=80&auto=format&fit=crop", note:"Full HD, built-in apps" },
+      { name:"keyboard", price:10000, img:"keyboard.jpg", note:"Good for office & study" },
+      { name:"Phone charger &amp; cable set", price:3000, img:"https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=600&q=80&auto=format&fit=crop", note:"Type-C, 1m cable" }
+    ],
+    repair: [
+      { name:"Phone screen replacement", price:5000, img:"Back glass replacement iPhone XR.jpg", note:"Most models, same day" },
+      { name:"Back glass replacement", price:5000, img:"Best iPhone Repair Shop in Charlotte, NC.jpg", note:"iPhone & Android rear glass" },
+      { name:"Battery replacement", price:4000, img:"download (1).jpg", note:"Phone or laptop battery" },
+      { name:"Charging port repair", price:4000, img:"https://images.unsplash.com/photo-1587614382346-4ec70e388b28?w=600&q=80&auto=format&fit=crop", note:"Loose or dead port fixed" },
+      { name:"Water damage recovery", price:10000, img:"What Is The Best Solder.jpg ", note:"Cleaning & diagnostics" },
+      { name:"Software / OS repair", price:10000, img:"https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&q=80&auto=format&fit=crop", note:"Unbrick, reinstall, unlock" },
+      { name:"Laptop screen replacement", price:15000, img:"Same Day Apple iPhone Battery.jpg", note:"Cracked or dead display" }
+      
+    ],
+    interior: [
+      { name:"Glass bottle lamp — amber", price:5000, img:"lights (2).jpg", note:"Handmade, recycled bottle" },
+      { name:"Glass bottle lamp — clear, wood base", price:28000, img:"lights.jpg", note:"Warm LED filament bulb" },
+      { name:"Small side table", price:15000, img:"furniture 2.jpg", note:"Handmade, solid wood" },
+      { name:"Decorative wall shelf", price:20000, img:"furniture.jpg", note:"Floating, hand-finished" },
+      { name:"Stool, hand-carved", price:15000, img:"furniture 3.jpg", note:"One-piece hardwood" },
+      { name:"Bottle lamp set (pair)", price:10000, img:"bottle glass.jpg", note:"Two lamps, matching finish" }
+    ]
+  };
+
+  function formatRWF(n){ return n.toLocaleString('en-US') ; }
+
+  function renderGrid(key){
+    const grid = document.getElementById('grid-' + key);
+    grid.innerHTML = PRODUCTS[key].map((p, i) => `
+      <div class="card">
+        <div class="imgwrap"><img src="${p.img}" alt="${p.name}" loading="lazy"></div>
+        <div class="card-body">
+          <h3>${p.name}</h3>
+          <p class="note">${p.note}</p>
+          <div class="price-row">
+            <div class="price">${formatRWF(p.price)}<small>RWF</small></div>
+            <button class="buy-btn" onclick="openModal('${key}', ${i})">Buy</button>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+  Object.keys(PRODUCTS).forEach(renderGrid);
+
+  // Section switcher: scrolls to section and updates active tab
+  const switcher = document.getElementById('switcher');
+  switcher.addEventListener('click', e => {
+    const btn = e.target.closest('button');
+    if(!btn) return;
+    [...switcher.children].forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.sec).scrollIntoView({behavior:'smooth', block:'start'});
+  });
+  // Keep switcher in sync when user scrolls manually
+  const sections = ['electro','repair','interior'].map(id => document.getElementById(id));
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(en => {
+      if(en.isIntersecting){
+        [...switcher.children].forEach(b => b.classList.toggle('active', b.dataset.sec === en.target.id));
+      }
+    });
+  }, { rootMargin: '-40% 0px -50% 0px' });
+  sections.forEach(s => io.observe(s));
+
+  // ---- Modal / checkout ----
+  let current = null;
+  const overlay = document.getElementById('overlay');
+  const modalItem = document.getElementById('modalItem');
+  const modalPrice = document.getElementById('modalPrice');
+  const stepsBox = document.getElementById('steps');
+  const waBtn = document.getElementById('waBtn');
+  let network = 'mtn';
+
+  window.openModal = function(key, i){
+    current = PRODUCTS[key][i];
+    modalItem.textContent = current.name;
+    modalPrice.textContent = formatRWF(current.price) + ' RWF';
+    network = 'mtn';
+    updatePayOpts();
+    renderSteps();
+    overlay.classList.add('open');
+  };
+
+  document.getElementById('modalClose').onclick = () => overlay.classList.remove('open');
+  overlay.addEventListener('click', e => { if(e.target === overlay) overlay.classList.remove('open'); });
+
+  document.querySelectorAll('.pay-opt').forEach(btn => {
+    btn.onclick = () => { network = btn.dataset.net; updatePayOpts(); renderSteps(); };
+  });
+  function updatePayOpts(){
+    document.querySelectorAll('.pay-opt').forEach(b => b.classList.toggle('active', b.dataset.net === network));
+  }
+
+  function renderSteps(){
+    if(!current) return;
+    if(network === 'mtn'){
+      stepsBox.innerHTML = `
+        Pay ${formatRWF(current.price)} RWF with <strong>MTN MoMo</strong>:
+        <ol>
+          <li>Dial <code>*182*8*1*${MTN_MERCHANT_CODE}#</code></li>
+          <li>Enter amount: <code>${current.price}</code></li>
+          <li>Confirm with your MoMo PIN</li>
+        </ol>`;
+    } else {
+      stepsBox.innerHTML = `
+        Pay ${formatRWF(current.price)} RWF with <strong>Airtel Money</strong>:
+        <ol>
+          <li>Dial <code>*500*${AIRTEL_MERCHANT_CODE}#</code></li>
+          <li>Enter amount: <code>${current.price}</code></li>
+          <li>Confirm with your Airtel Money PIN</li>
+        </ol>`;
+    }
+  }
+
+  waBtn.onclick = () => {
+    if(!current) return;
+    const msg = `Hello SD Technology, I'd like to order: ${current.name} (${formatRWF(current.price)} RWF). I'll pay with ${network === 'mtn' ? 'MTN MoMo' : 'Airtel Money'}.`;
+    const url = `https://wa.me/${CONTACT_PHONE_INTL}?text=${encodeURIComponent(msg)}`;
+    window.open(url, '_blank');
+  };
+</script>
+</body>
+</html>
