@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SD Nova Technology — Electronics, Repair &amp; Interior Design</title>
+<title>SD Technology — Electronics, Repair &amp; Interior Design</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -193,6 +193,12 @@
     width:100%; padding:13px; border-radius:10px; background:#25D366; color:#0b1a0f; font-weight:700; font-size:0.92rem;
   }
   .whatsapp-btn:hover{ filter:brightness(1.06); }
+  .momo-btn{
+    display:flex; align-items:center; justify-content:center; gap:8px; width:100%; padding:13px;
+    border-radius:10px; background:#ffcc08; color:#1b1810; font-weight:700; font-size:0.92rem;
+    text-decoration:none; margin-bottom:10px; cursor:pointer;
+  }
+  .momo-btn:hover{ filter:brightness(1.06); }
   .modal .fineprint{ font-size:0.72rem; color:rgba(243,236,221,0.45); margin-top:14px; text-align:center; }
 
   @media (max-width:640px){
@@ -211,7 +217,7 @@
 
 <header>
   <div class="nav-wrap">
-    <div class="brand"><span class="mark">SD</span> SD Nova Technology</div>
+    <div class="brand"><span class="mark">SD</span> SD Technology</div>
     <nav class="switcher" id="switcher">
       <button data-sec="search" class="active">Search</button>
       <button data-sec="electro">Electro Store</button>
@@ -244,7 +250,7 @@
       <p class="desc">Search across phones, repairs and handmade interior pieces.</p>
     </div>
     <div class="search-box">
-      <input id="searchInput" type="search" placeholder="Search Here "autocomplete="off">
+      <input id="searchInput" type="search" placeholder="Try “lamp”, “charger”, “screen”…" autocomplete="off">
     </div>
     <div class="chips" id="searchChips">
       <button class="chip active" data-cat="all">All</button>
@@ -347,8 +353,10 @@
 
     <div class="steps" id="steps"></div>
 
-    <button class="whatsapp-btn" id="waBtn">Confirm order on WhatsApp</button>
-    <div class="fineprint">You'll get a payment confirmation from SD Technology before the order ships.</div>
+    <a class="momo-btn" id="momoBtn" href="#">📞 Pay with MoMo</a>
+
+    <button class="whatsapp-btn" id="waBtn">bargain on WhatsApp</button>
+    <div class="fineprint">Ask Discount for product on WhatsApp</div>
   </div>
 </div>
 
@@ -366,7 +374,7 @@
       {  name:"charger", price:5000, img:"charger (1).jpg", note:"Fast charge, dual USB" },
       { name:"Smart TV, 43\"", price:265000, img:"https://images.unsplash.com/photo-1593305841991-05c297ba4575?w=600&q=80&auto=format&fit=crop", note:"Full HD, built-in apps" },
       { name:"keyboard", price:10000, img:"keyboard.jpg", note:"Good for office & study" },
-      { name:"phone camera protector", price:17000, img:"camera protector.jpg", note:"Good for recording & content creators" },
+      { name:"phone camera protector", price:5000, img:"camera protector.jpg", note:"Good for recording & content creators" },
       { name:"Iphone Earphones", price:3000, img:"iphone earphones.jpg", note:"Help to feel music within your phones" },
       { name:"JBL Boombox 3", price:20000, img:"JBL Boombox 3.jpg", note:"Gives Good vibes Good energy And Good beats" },
       { name:"Octobuddy", price:5000, img:"octobuddy.jpg", note:" " },
@@ -375,10 +383,10 @@
       { name:"Wireless Microphone", price:17000, img:"phone microphones.jpg", note:"helps you to record at distance" },
       { name:"Stick Tripod", price:25000, img:"Selfie Stick Tripod.jpg", note:"Good for recording , filming & study" },
       { name:"Smartwatch", price:18000, img:"Smartwatch S9 Ultra.jpg", note:"Good for office & study" },
-      { name:"Universal Car Mobile holder", price:15000, img:"Best Car Phone Holder.jpg", note:"Best car phone holder secure stable and hands free driving" }, 
+      { name:"Universal Car Mobile holder", price:9000, img:"Best Car Phone Holder.jpg", note:"Best car phone holder secure stable and hands free driving" }, 
       { name:"Silicon cases", price:6000, img:"silicon cases.jpg", note:"Cover Your Phone With The Best one" },
       { name:"Type-c Cable", price:2000, img:"type-c cable.jpg", note:"Good for Data Transfer & Charging" },
-      { name:"360 Degrees Phone holder", price:15000, img:"360 Degrees phone holder.jpg", note:"Rotate in every direction & holds phone well" },
+      { name:"360 Degrees Phone holder", price:7000, img:"360 Degrees phone holder.jpg", note:"Rotate in every direction & holds phone well" },
       { name:"Laptop Stand", price:20000, img:"computer stand.jpg", note:"For desk foldable laptop riser with 10 adjustable height" },
       { name:"Phone charger &amp; cable set", price:3000, img:"https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=600&q=80&auto=format&fit=crop", note:"Type-C, 1m cable" }
     ],
@@ -534,6 +542,11 @@
 
   function renderSteps(){
     if(!current) return;
+    // "Pay with MoMo" button: opens the phone dialer with the code and amount filled in
+    const momoBtn = document.getElementById('momoBtn');
+    const base = MTN_MERCHANT_CODE.startsWith('*') ? MTN_MERCHANT_CODE : '*182*8*1*' + MTN_MERCHANT_CODE;
+    momoBtn.href = 'tel:' + encodeURIComponent(base + '*' + current.price + '#');
+    momoBtn.style.display = network === 'mtn' ? 'flex' : 'none';
     if(network === 'mtn'){
       stepsBox.innerHTML = `
         Pay ${formatRWF(current.price)} RWF with <strong>MTN MoMo</strong>:
@@ -555,7 +568,7 @@
 
   waBtn.onclick = () => {
     if(!current) return;
-    const msg = `Hello SD Technology, I'd like to order: ${current.name} (${formatRWF(current.price)} RWF). I'll pay with ${network === 'mtn' ? 'MTN MoMo' : 'Airtel Money'}.`;
+    const msg = `Hello SD Nova Technology, I'd like to order: ${current.name} (${formatRWF(current.price)} RWF). I'll pay with ${network === 'mtn' ? 'MTN MoMo' : 'Airtel Money'}.`;
     const url = `https://wa.me/${CONTACT_PHONE_INTL}?text=${encodeURIComponent(msg)}`;
     window.open(url, '_blank');
   };
